@@ -1,8 +1,11 @@
 package com.example.practice_pathfinder.web;
 
+import com.example.practice_pathfinder.model.binding.UserLoginBindingModel;
 import com.example.practice_pathfinder.model.binding.UserRegisterBindingModel;
 import com.example.practice_pathfinder.model.service.UserServiceModel;
 import com.example.practice_pathfinder.service.UserService;
+import com.example.practice_pathfinder.util.CurrentUser;
+import org.apache.catalina.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,10 +36,49 @@ public class UserController {
         return new UserRegisterBindingModel();
     }
 
-    @GetMapping("/login")
-    public String login()
+    @ModelAttribute
+    public UserLoginBindingModel userLoginBindingModel()
     {
+        return new UserLoginBindingModel();
+    }
+
+    @GetMapping("/login")
+    public String login(Model model)
+    {
+        model.addAttribute("isExists", true);
+
         return "login";
+    }
+
+    @PostMapping("/login")
+    public String loginConfirm(UserLoginBindingModel userLoginBindingModel,
+                               BindingResult bindingResult, RedirectAttributes redirectAttributes)
+    {
+        if(bindingResult.hasErrors())
+        {
+            redirectAttributes
+                    .addFlashAttribute("userLoginBindingModel", userLoginBindingModel)
+                    .addFlashAttribute("org.springframework.validation.BindingResult.userLoginBindingModel", bindingResult);
+
+            return "redirect:login";
+        }
+
+        UserServiceModel user = userService.findByUsernameAndPassword(userLoginBindingModel.getUsername(),
+                userLoginBindingModel.getPassword());
+
+        if(user == null)
+        {
+            redirectAttributes
+                    .addFlashAttribute("isExists", false)
+                    .addFlashAttribute("userLoginBindingModel", userLoginBindingModel)
+                    .addFlashAttribute("org.springframework.validation.BindingResult.userLoginBindingModel", bindingResult);
+
+            return "redirect:login";
+        }
+
+        userService.loginUser(user.getId(), user.getUsername());
+
+        return "redirect:/";
     }
 
     @GetMapping("/register")
@@ -65,5 +107,13 @@ public class UserController {
         userService.registerUser(modelMapper.map(userRegisterBindingModel, UserServiceModel.class));
 
         return "redirect:login";
+    }
+
+    @GetMapping("/logout")
+    public String logout()
+    {
+        userService.logout();
+
+        return "redirect:/";
     }
 }
