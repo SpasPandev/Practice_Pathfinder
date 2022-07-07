@@ -35,7 +35,7 @@
                         <label for="inputFullName" class="col-form-label ">Full Name</label>
                     </div>
                     <div class="col-auto">
-                        <input name="fullname"
+                        <input th:field="*{fullName}"
                                required minlength="5" maxlength="20"
                                type="text"
                                id="inputFullName"
@@ -51,7 +51,7 @@
                         <label for="inputEmail" class="col-form-label ">Email</label>
                     </div>
                     <div class="col-auto">
-                        <input name="email"
+                        <input th:field="*{email}"
 								required
                                type="email"
                                id="inputEmail"
@@ -66,7 +66,7 @@
                         <label for="inputAge" class="col-form-label ">Age</label>
                     </div>
                     <div class="col-auto">
-                        <input name="age" required
+                        <input th:field="*{age}" required
                                type="number"
                                id="inputAge"
                                class="form-control"
@@ -81,7 +81,7 @@
                         <label for="inputPassword" class="col-form-label ">Password</label>
                     </div>
                     <div class="col-auto">
-                        <input name="password"
+                        <input th:field="*{password}"
                                 required minlength="5" maxlength="20"
                                type="password"
                                id="inputPassword"
@@ -99,7 +99,7 @@
                         <label for="inputConfirmPassword" class="col-form-label ">Confirm Password</label>
                     </div>
                     <div class="col-auto">
-                        <input name="confirmPassword"
+                        <input th:field="*{confirmPassword}"
                                 required minlength="5" maxlength="20"
                                type="password"
                                id="inputConfirmPassword"

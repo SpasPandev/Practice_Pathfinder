@@ -1,6 +1,9 @@
 package com.example.practice_pathfinder.web;
 
 import com.example.practice_pathfinder.model.binding.UserRegisterBindingModel;
+import com.example.practice_pathfinder.model.service.UserServiceModel;
+import com.example.practice_pathfinder.service.UserService;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,6 +18,14 @@ import javax.validation.Valid;
 @Controller
 @RequestMapping("/users")
 public class UserController {
+
+    private final UserService userService;
+    private final ModelMapper modelMapper;
+
+    public UserController(UserService userService, ModelMapper modelMapper) {
+        this.userService = userService;
+        this.modelMapper = modelMapper;
+    }
 
     @ModelAttribute
     public UserRegisterBindingModel userRegisterBindingModel()
@@ -51,6 +62,8 @@ public class UserController {
             return "redirect:register";
         }
 
-        return "redirect:/";
+        userService.registerUser(modelMapper.map(userRegisterBindingModel, UserServiceModel.class));
+
+        return "redirect:login";
     }
 }
