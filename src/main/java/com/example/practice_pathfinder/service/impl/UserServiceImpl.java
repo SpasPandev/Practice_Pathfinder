@@ -23,8 +23,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void registerUser(UserServiceModel userServiceModel)
-    {
+    public void registerUser(UserServiceModel userServiceModel) {
+
         UserEntity userEntity = modelMapper.map(userServiceModel, UserEntity.class);
 
         userEntity.setLevel(LevelEnum.BEGINNER);
@@ -34,6 +34,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserServiceModel findByUsernameAndPassword(String username, String password) {
+
         return userRepository
                 .findByUsernameAndPassword(username, password)
                 .map(userEntity -> modelMapper.map(userEntity, UserServiceModel.class))
@@ -41,15 +42,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void loginUser(Long id, String username)
-    {
+    public void loginUser(Long id, String username) {
+
         currentUser.setUsername(username);
         currentUser.setId(id);
     }
 
     @Override
-    public void logout()
-    {
+    public void logout() {
+
         currentUser.setId(null);
         currentUser.setUsername(null);
     }

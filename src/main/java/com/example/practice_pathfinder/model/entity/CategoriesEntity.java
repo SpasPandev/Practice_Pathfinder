@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "categories")
-public class CategoriesEntity extends BaseEntity{
+public class CategoriesEntity extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private CategoryEnum name;

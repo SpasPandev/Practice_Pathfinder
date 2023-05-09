@@ -35,20 +35,20 @@
                     <a href="/about">About</a>
                 </li>
             </th:block>
-           <th:block th:if="${@currentUser.id != null}">
-               <li>
-                   <a href="/routes/add">Add new route</a>
-               </li>
-               <li>
-                   <a href="/users/profile">Profile</a>
-               </li>
-               <li>
-                   <a href="/">Admin</a>
-               </li>
-               <li>
-                   <a href="/users/logout">Logout</a>
-               </li>
-           </th:block>
+            <th:block th:if="${@currentUser.id != null}">
+                <li>
+                    <a href="/routes/add">Add new route</a>
+                </li>
+                <li>
+                    <a href="/users/profile">Profile</a>
+                </li>
+                <li>
+                    <a href="/">Admin</a>
+                </li>
+                <li>
+                    <a href="/users/logout">Logout</a>
+                </li>
+            </th:block>
         </ul>
     </nav>
 </header>

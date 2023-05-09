@@ -3,10 +3,6 @@ package com.example.practice_pathfinder.model.service;
 import com.example.practice_pathfinder.model.entity.RoleEntity;
 import com.example.practice_pathfinder.model.entity.enums.LevelEnum;
 
-import javax.persistence.Column;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.ManyToMany;
 import java.util.Set;
 
 public class UserServiceModel {

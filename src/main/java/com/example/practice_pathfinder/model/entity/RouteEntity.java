@@ -8,7 +8,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "routes")
-public class RouteEntity extends BaseEntity{
+public class RouteEntity extends BaseEntity {
 
     @Column(columnDefinition = "LONGTEXT")
     private String gpxCoordinates;

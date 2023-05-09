@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "comments")
-public class CommentsEntity extends BaseEntity{
+public class CommentsEntity extends BaseEntity {
 
     @Column(nullable = false)
     private boolean approved;

@@ -4,8 +4,6 @@ import com.example.practice_pathfinder.model.binding.UserLoginBindingModel;
 import com.example.practice_pathfinder.model.binding.UserRegisterBindingModel;
 import com.example.practice_pathfinder.model.service.UserServiceModel;
 import com.example.practice_pathfinder.service.UserService;
-import com.example.practice_pathfinder.util.CurrentUser;
-import org.apache.catalina.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,20 +29,18 @@ public class UserController {
     }
 
     @ModelAttribute
-    public UserRegisterBindingModel userRegisterBindingModel()
-    {
+    public UserRegisterBindingModel userRegisterBindingModel() {
         return new UserRegisterBindingModel();
     }
 
     @ModelAttribute
-    public UserLoginBindingModel userLoginBindingModel()
-    {
+    public UserLoginBindingModel userLoginBindingModel() {
         return new UserLoginBindingModel();
     }
 
     @GetMapping("/login")
-    public String login(Model model)
-    {
+    public String login(Model model) {
+
         model.addAttribute("isExists", true);
 
         return "login";
@@ -52,10 +48,10 @@ public class UserController {
 
     @PostMapping("/login")
     public String loginConfirm(UserLoginBindingModel userLoginBindingModel,
-                               BindingResult bindingResult, RedirectAttributes redirectAttributes)
-    {
-        if(bindingResult.hasErrors())
-        {
+                               BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+
+        if (bindingResult.hasErrors()) {
+
             redirectAttributes
                     .addFlashAttribute("userLoginBindingModel", userLoginBindingModel)
                     .addFlashAttribute("org.springframework.validation.BindingResult.userLoginBindingModel", bindingResult);
@@ -66,8 +62,8 @@ public class UserController {
         UserServiceModel user = userService.findByUsernameAndPassword(userLoginBindingModel.getUsername(),
                 userLoginBindingModel.getPassword());
 
-        if(user == null)
-        {
+        if (user == null) {
+
             redirectAttributes
                     .addFlashAttribute("isExists", false)
                     .addFlashAttribute("userLoginBindingModel", userLoginBindingModel)
@@ -82,18 +78,18 @@ public class UserController {
     }
 
     @GetMapping("/register")
-    public String register(Model model)
-    {
+    public String register() {
+
         return "register";
     }
 
     @PostMapping("/register")
     public String registerConfirm(@Valid UserRegisterBindingModel userRegisterBindingModel,
-                                  BindingResult bindingResult, RedirectAttributes redirectAttributes)
-    {
-        if(bindingResult.hasErrors() || !userRegisterBindingModel.getPassword().
-                equals(userRegisterBindingModel.getConfirmPassword()))
-        {
+                                  BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+
+        if (bindingResult.hasErrors() || !userRegisterBindingModel.getPassword().
+                equals(userRegisterBindingModel.getConfirmPassword())) {
+
             redirectAttributes.
                     addFlashAttribute("userRegisterBindingModel", userRegisterBindingModel);
 
@@ -104,14 +100,16 @@ public class UserController {
             return "redirect:register";
         }
 
+        //TODO: existing user name with custom validator
+
         userService.registerUser(modelMapper.map(userRegisterBindingModel, UserServiceModel.class));
 
         return "redirect:login";
     }
 
     @GetMapping("/logout")
-    public String logout()
-    {
+    public String logout() {
+
         userService.logout();
 
         return "redirect:/";

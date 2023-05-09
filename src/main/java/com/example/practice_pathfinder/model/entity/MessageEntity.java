@@ -8,12 +8,12 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "messages")
-public class MessageEntity extends BaseEntity{
+public class MessageEntity extends BaseEntity {
 
     @Column(nullable = false)
     private LocalDateTime data_time;
     @Column(columnDefinition = "LONGTEXT")
-    private  String text_content;
+    private String text_content;
     @ManyToOne
     private UserEntity author;
     @ManyToOne
