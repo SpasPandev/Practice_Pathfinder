@@ -1,9 +1,14 @@
 package com.example.practice_pathfinder.service.impl;
 
+import com.example.practice_pathfinder.model.entity.RouteEntity;
+import com.example.practice_pathfinder.model.service.RouteServiceModel;
 import com.example.practice_pathfinder.model.view.RouteDetailsViewModel;
 import com.example.practice_pathfinder.model.view.RouteViewModel;
 import com.example.practice_pathfinder.repository.RouteRepository;
+import com.example.practice_pathfinder.repository.UserRepository;
+import com.example.practice_pathfinder.service.CategoryService;
 import com.example.practice_pathfinder.service.RouteService;
+import com.example.practice_pathfinder.util.CurrentUser;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -14,10 +19,16 @@ import java.util.stream.Collectors;
 public class RouteServiceImpl implements RouteService {
 
     private final RouteRepository routeRepository;
+    private final UserRepository userRepository;
+    private final CategoryService categoryService;
+    private final CurrentUser currentUser;
     private final ModelMapper modelMapper;
 
-    public RouteServiceImpl(RouteRepository routeRepository, ModelMapper modelMapper) {
+    public RouteServiceImpl(RouteRepository routeRepository, UserRepository userRepository, CategoryService categoryService, CurrentUser currentUser, ModelMapper modelMapper) {
         this.routeRepository = routeRepository;
+        this.userRepository = userRepository;
+        this.categoryService = categoryService;
+        this.currentUser = currentUser;
         this.modelMapper = modelMapper;
     }
 
@@ -50,5 +61,21 @@ public class RouteServiceImpl implements RouteService {
                 .findByIdByFetchPictures(id)
                 .map(route -> modelMapper.map(route, RouteDetailsViewModel.class))
                 .get();
+    }
+
+    @Override
+    public void addNewRoute(RouteServiceModel routeServiceModel) {
+
+        RouteEntity newRoute = modelMapper.map(routeServiceModel, RouteEntity.class);
+
+        newRoute.setAuthor(userRepository.findById(currentUser.getId()).get());
+
+        newRoute.setCategories(routeServiceModel
+                .getCategories()
+                .stream()
+                .map(categoryService::findCategoryByName)
+                .collect(Collectors.toSet()));
+
+        routeRepository.save(newRoute);
     }
 }

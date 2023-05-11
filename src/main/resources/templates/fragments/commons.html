@@ -37,7 +37,7 @@
             </th:block>
             <th:block th:if="${@currentUser.id != null}">
                 <li>
-                    <a href="/routes/add">Add new route</a>
+                    <a th:href="@{/routes/add}">Add new route</a>
                 </li>
                 <li>
                     <a th:href="@{/users/profile/{id}(id = ${@currentUser.id})}">Profile</a>
