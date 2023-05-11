@@ -1,5 +1,6 @@
 package com.example.practice_pathfinder.service.impl;
 
+import com.example.practice_pathfinder.model.view.RouteDetailsViewModel;
 import com.example.practice_pathfinder.model.view.RouteViewModel;
 import com.example.practice_pathfinder.repository.RouteRepository;
 import com.example.practice_pathfinder.service.RouteService;
@@ -30,10 +31,9 @@ public class RouteServiceImpl implements RouteService {
                             RouteViewModel routeViewModel =
                                     modelMapper.map(route, RouteViewModel.class);
 
-                            if (route.getPictures().isEmpty()){
+                            if (route.getPictures().isEmpty()) {
                                 routeViewModel.setPictureUrl("/images/pic4.jpg");
-                            }
-                            else {
+                            } else {
                                 routeViewModel.setPictureUrl(route.getPictures().stream().findFirst().get().getUrl());
                             }
 
@@ -41,5 +41,14 @@ public class RouteServiceImpl implements RouteService {
                         }
                 )
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public RouteDetailsViewModel findById(Long id) {
+
+        return routeRepository
+                .findByIdByFetchPictures(id)
+                .map(route -> modelMapper.map(route, RouteDetailsViewModel.class))
+                .get();
     }
 }
