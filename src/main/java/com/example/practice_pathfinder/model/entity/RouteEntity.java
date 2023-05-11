@@ -4,6 +4,7 @@ import com.example.practice_pathfinder.model.entity.enums.LevelEnum;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -24,6 +25,8 @@ public class RouteEntity extends BaseEntity {
     private Set<CategoriesEntity> categories;
     @Column(columnDefinition = "LONGTEXT")
     private String description;
+    @OneToMany(mappedBy = "route")
+    private List<PicturesEntity> pictures;
 
     public String getGpxCoordinates() {
         return gpxCoordinates;
@@ -79,6 +82,15 @@ public class RouteEntity extends BaseEntity {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public List<PicturesEntity> getPictures() {
+        return pictures;
+    }
+
+    public RouteEntity setPictures(List<PicturesEntity> pictures) {
+        this.pictures = pictures;
+        return this;
     }
 
     public RouteEntity() {
