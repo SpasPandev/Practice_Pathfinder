@@ -5,8 +5,8 @@ import com.example.practice_pathfinder.model.entity.enums.LevelEnum;
 import com.example.practice_pathfinder.model.service.UserServiceModel;
 import com.example.practice_pathfinder.repository.UserRepository;
 import com.example.practice_pathfinder.service.UserService;
-import com.example.practice_pathfinder.util.CurrentUser;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,12 +14,12 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
-    private final CurrentUser currentUser;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper, CurrentUser currentUser) {
+    public UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
-        this.currentUser = currentUser;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -27,39 +27,18 @@ public class UserServiceImpl implements UserService {
 
         UserEntity userEntity = modelMapper.map(userServiceModel, UserEntity.class);
 
+        userEntity.setPassword(passwordEncoder.encode(userServiceModel.getPassword()));
+
         userEntity.setLevel(LevelEnum.BEGINNER);
 
         userRepository.save(userEntity);
     }
 
     @Override
-    public UserServiceModel findByUsernameAndPassword(String username, String password) {
+    public UserServiceModel findByUsername(String username) {
 
         return userRepository
-                .findByUsernameAndPassword(username, password)
-                .map(userEntity -> modelMapper.map(userEntity, UserServiceModel.class))
-                .orElse(null);
-    }
-
-    @Override
-    public void loginUser(Long id, String username) {
-
-        currentUser.setUsername(username);
-        currentUser.setId(id);
-    }
-
-    @Override
-    public void logout() {
-
-        currentUser.setId(null);
-        currentUser.setUsername(null);
-    }
-
-    @Override
-    public UserServiceModel findById(Long id) {
-
-        return userRepository
-                .findById(id)
+                .findByUsername(username)
                 .map(user -> modelMapper.map(user, UserServiceModel.class))
                 .orElse(null);
     }

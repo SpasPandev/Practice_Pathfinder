@@ -12,5 +12,5 @@ public interface RouteService {
 
     RouteDetailsViewModel findById(Long id);
 
-    void addNewRoute(RouteServiceModel routeServiceModel);
+    void addNewRoute(RouteServiceModel routeServiceModel, Long ownerId);
 }

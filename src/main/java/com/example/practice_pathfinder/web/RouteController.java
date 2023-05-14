@@ -3,8 +3,9 @@ package com.example.practice_pathfinder.web;
 import com.example.practice_pathfinder.model.binding.RouteAddBindingModel;
 import com.example.practice_pathfinder.model.service.RouteServiceModel;
 import com.example.practice_pathfinder.service.RouteService;
-import com.example.practice_pathfinder.util.CurrentUser;
+import com.example.practice_pathfinder.service.impl.PathfinderUser;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,12 +20,10 @@ import java.io.IOException;
 public class RouteController {
 
     private final RouteService routeService;
-    private final CurrentUser currentUser;
     private final ModelMapper modelMapper;
 
-    public RouteController(RouteService routeService, CurrentUser currentUser, ModelMapper modelMapper) {
+    public RouteController(RouteService routeService, ModelMapper modelMapper) {
         this.routeService = routeService;
-        this.currentUser = currentUser;
         this.modelMapper = modelMapper;
     }
 
@@ -47,16 +46,13 @@ public class RouteController {
     @GetMapping("/add")
     public String addRoute() {
 
-        if (currentUser.getId() == null) {
-            return "redirect:/users/login";
-        }
-
         return "add-route";
     }
 
     @PostMapping("/add")
-    public String addRouteConfirm(@Valid RouteAddBindingModel routeAddBindingModel, BindingResult bindingResult,
-                                  RedirectAttributes redirectAttributes) throws IOException {
+    public String addRouteConfirm(@Valid RouteAddBindingModel routeAddBindingModel,
+                                  BindingResult bindingResult, RedirectAttributes redirectAttributes,
+                                  @AuthenticationPrincipal PathfinderUser userPrincipal) throws IOException {
 
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("routeAddBindingModel", routeAddBindingModel);
@@ -70,7 +66,7 @@ public class RouteController {
         routeServiceModel.setGpxCoordinates(new String(
                 routeAddBindingModel.getGpxCoordinates().getBytes()));
 
-        routeService.addNewRoute(routeServiceModel);
+        routeService.addNewRoute(routeServiceModel, userPrincipal.getId());
 
         return "redirect:all";
     }

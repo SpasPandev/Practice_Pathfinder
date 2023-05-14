@@ -77,6 +77,24 @@ img {
     color: var(--light);
 }
 
+.main-nav form input {
+    background: var(--primary);
+    display: block;
+    text-decoration: none;
+    padding: 0.8rem;
+    text-align: center;
+    color: var(--dark);
+    text-transform: uppercase;
+    font-size: 1.1rem;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+}
+
+.main-nav form:hover input {
+    background: var(--dark);
+    color: var(--light);
+}
+
 /* Top Container */
 .top-container {
     display: grid;

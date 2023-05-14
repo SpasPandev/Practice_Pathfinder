@@ -6,6 +6,7 @@ import com.example.practice_pathfinder.model.service.UserServiceModel;
 import com.example.practice_pathfinder.model.view.UserViewModel;
 import com.example.practice_pathfinder.service.UserService;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -44,37 +45,16 @@ public class UserController {
         return "login";
     }
 
-    @PostMapping("/login")
-    public String loginConfirm(UserLoginBindingModel userLoginBindingModel,
-                               BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    @PostMapping("/login-error")
+    public String failedLogin(
+            @ModelAttribute(UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_USERNAME_KEY) String username,
+            RedirectAttributes redirectAttributes) {
 
-        if (bindingResult.hasErrors()) {
+        redirectAttributes.addFlashAttribute("bad_credentials", true);
+        redirectAttributes.addFlashAttribute("username", username);
 
-            redirectAttributes
-                    .addFlashAttribute("userLoginBindingModel", userLoginBindingModel)
-                    .addFlashAttribute("org.springframework.validation.BindingResult.userLoginBindingModel", bindingResult);
-
-            return "redirect:login";
-        }
-
-        UserServiceModel user = userService.findByUsernameAndPassword(userLoginBindingModel.getUsername(),
-                userLoginBindingModel.getPassword());
-
-        if (user == null) {
-
-            redirectAttributes
-                    .addFlashAttribute("isExists", false)
-                    .addFlashAttribute("userLoginBindingModel", userLoginBindingModel)
-                    .addFlashAttribute("org.springframework.validation.BindingResult.userLoginBindingModel", bindingResult);
-
-            return "redirect:login";
-        }
-
-        userService.loginUser(user.getId(), user.getUsername());
-
-        return "redirect:/";
+        return "redirect:/users/login";
     }
-
     @GetMapping("/register")
     public String register() {
 
@@ -105,19 +85,11 @@ public class UserController {
         return "redirect:login";
     }
 
-    @GetMapping("/logout")
-    public String logout() {
-
-        userService.logout();
-
-        return "redirect:/";
-    }
-
-    @GetMapping("/profile/{id}")
-    public String profile(@PathVariable Long id, Model model) {
+    @GetMapping("/profile/{username}")
+    public String profile(@PathVariable String username, Model model) {
 
         model.addAttribute("user",
-                modelMapper.map(userService.findById(id), UserViewModel.class));
+                modelMapper.map(userService.findByUsername(username), UserViewModel.class));
 
         return "profile";
     }
