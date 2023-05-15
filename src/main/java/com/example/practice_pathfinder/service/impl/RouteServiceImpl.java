@@ -11,6 +11,7 @@ import com.example.practice_pathfinder.service.RouteService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,6 +30,7 @@ public class RouteServiceImpl implements RouteService {
         this.modelMapper = modelMapper;
     }
 
+    @Transactional
     @Override
     public List<RouteViewModel> findAllRoutesViews() {
 

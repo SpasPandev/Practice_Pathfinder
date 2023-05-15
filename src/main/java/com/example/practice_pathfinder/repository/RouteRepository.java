@@ -16,4 +16,7 @@ public interface RouteRepository extends JpaRepository<RouteEntity, Long> {
 
     @Query("SELECT r FROM RouteEntity r LEFT JOIN FETCH r.pictures WHERE r.id = ?1")
     Optional<RouteEntity> findByIdByFetchPictures(Long id);
+
+    @Query("SELECT r FROM RouteEntity r LEFT JOIN FETCH r.comments WHERE r.id = ?1")
+    Optional<RouteEntity> findByIdByFetchComments(Long id);
 }
