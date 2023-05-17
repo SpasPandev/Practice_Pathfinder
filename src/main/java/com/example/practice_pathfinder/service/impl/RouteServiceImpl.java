@@ -53,6 +53,7 @@ public class RouteServiceImpl implements RouteService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     @Override
     public RouteDetailsViewModel findById(Long id) {
 
