@@ -12,7 +12,8 @@ public class CommentsEntity extends BaseEntity {
     private boolean approved;
     @Column(nullable = false)
     private LocalDateTime created;
-    @Column(columnDefinition = "LONGTEXT", nullable = false)
+    @Lob
+    @Column(nullable = false)
     private String textContent;
     @ManyToOne
     private UserEntity author;

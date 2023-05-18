@@ -10,7 +10,7 @@ import java.util.Set;
 @Table(name = "routes")
 public class RouteEntity extends BaseEntity {
 
-    @Column(columnDefinition = "LONGTEXT")
+    @Lob
     private String gpxCoordinates;
     @Enumerated(EnumType.STRING)
     private LevelEnum level;
@@ -22,11 +22,11 @@ public class RouteEntity extends BaseEntity {
     private String videoUrl;
     @ManyToMany
     private Set<CategoriesEntity> categories;
-    @Column(columnDefinition = "LONGTEXT")
+    @Lob
     private String description;
     @OneToMany(mappedBy = "route")
     private List<PicturesEntity> pictures;
-    @OneToMany(mappedBy = "route")
+    @OneToMany(mappedBy = "route", cascade = CascadeType.ALL)
     private List<CommentsEntity> comments;
 
     public String getGpxCoordinates() {

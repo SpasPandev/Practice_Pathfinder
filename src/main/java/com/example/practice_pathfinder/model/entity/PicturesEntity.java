@@ -8,7 +8,7 @@ public class PicturesEntity extends BaseEntity {
 
     @Column(nullable = false)
     private String title;
-    @Column(columnDefinition = "LONGTEXT")
+    @Lob
     private String url;
     @ManyToOne
     private UserEntity author;

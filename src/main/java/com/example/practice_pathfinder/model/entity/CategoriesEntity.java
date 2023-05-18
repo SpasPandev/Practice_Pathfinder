@@ -10,7 +10,7 @@ public class CategoriesEntity extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private CategoryEnum name;
-    @Column(columnDefinition = "TEXT")
+    @Lob
     private String description;
 
     public CategoryEnum getName() {
