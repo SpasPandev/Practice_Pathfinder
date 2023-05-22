@@ -10,7 +10,6 @@
 	</parent>
 	<groupId>com.example</groupId>
 	<artifactId>practice_pathfinder</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 	<name>Practice_Pathfinder</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
@@ -56,11 +55,6 @@
 			<groupId>org.modelmapper</groupId>
 			<artifactId>modelmapper</artifactId>
 			<version>3.0.0</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
 		</dependency>
 
 		<dependency>
