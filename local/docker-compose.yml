@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  db:
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    command: ['--character-set-server=utf8mb4', '--collation-server=utf8mb4_bin']
+    environment:
+      - MYSQL_DATABASE=pathfinder
+      - MYSQL_ROOT_PASSWORD=123321
+  practice_pathfinder:
+    image: sppan7/practice_pathfinder:v1
+    ports:
+      - "8080:8080"
+    environment:
+      - MYSQL_HOST=db
